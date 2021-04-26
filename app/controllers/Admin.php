@@ -14,7 +14,13 @@ class Admin extends Controller
     public function index()
     {
         $this->sessionCheck();
-        $data = [$this->model('User_model')->getAdminById($_SESSION['auth']['id'])];
-        $this->view('admin/admin', $data);
+        $data = [$this->model('User_model')->getAllBerita()];
+        $this->view('admin/index', $data);
+    }
+
+    public function insertNews()
+    {
+        $this->model('User_model')->insertNews($_POST);
+        header('Location: ' . BASEURL . '/admin/index');
     }
 }

@@ -10,6 +10,12 @@ class Dashboard extends Controller
 
     public function news()
     {
-        $this->view('dashboard/news');
+        $data = [$this->model('User_model')->getAllBerita()];
+        $this->view('dashboard/news', $data);
+    }
+
+    public function employe()
+    {
+        $this->view('dashboard/employe');
     }
 }

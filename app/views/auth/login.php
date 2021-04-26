@@ -19,13 +19,10 @@
 </head>
 
 <body>
-
-
     <!-- Login Area -->
-
     <div class="container-fluid" data-aos="fade-down" data-aos-duration="2000">
-        <a class="text-dark d-flex justify-content-center"><i class="fas fa-3x fa-book-reader"></i>&nbsp;</a>
-        <h2 class="text-center p-3">Sistem Informasi<br>SMK PGRI 2 Gianyar</h2>
+        <a class="text-dark d-flex justify-content-center"><img src="assets/img/kemendikbud.png" width="100px" alt=""></a>
+        <h2 class="text-center p-3">SMK PGRI 2 Gianyar</h2>
         <?php if (isset($_SESSION['error'])) { ?>
             <div class="alert alert-danger" role="alert">
                 <?= $_SESSION['error']; ?>
@@ -36,19 +33,18 @@
         ?>
         <form action="<?= BASEURL; ?>/auth/login" method="POST">
             <div class="form-group">
-                <label for="exampleInputEmail1">Alamat Email</label>
-                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off">
-                <small id="emailHelp" class="form-text text-muted">Masukkan alamat email Anda.</small>
+                <label for="username">Username</label>
+                <input type="username" name="username" class="form-control" id="username" aria-describedby="usernameHelp" autocomplete="off">
+                <small id="usernameHelp" class="form-text text-muted">Masukkan username Anda.</small>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" name="password" class="form-control" id="exampleInputPassword1" autocomplete="off">
-                <small id="emailHelp" class="form-text text-muted">Masukkan alamat password Anda.</small>
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" id="password" autocomplete="off">
+                <small id="passwordHelp" class="form-text text-muted">Masukkan password Anda.</small>
             </div>
-            <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block">MASUK</button>
+            <button type="submit" name="submit" class="btn btn-primary btn-block">MASUK</button>
         </form>
     </div>
-
     <!-- End Login Area -->
 
 
@@ -66,6 +62,7 @@
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <!-- Readmore JS -->
+    <script src="<?= JS; ?>/readMoreJS.min.js"></script>
 
     <script>
         AOS.init();

@@ -5,7 +5,7 @@ class Auth extends Controller
     public function sessionCheck()
     {
         if (isset($_SESSION['auth'])) {
-            header('Location: ' . BASEURL . '/admin/admin');
+            header('Location: ' . BASEURL . '/admin/index');
         }
     }
 
@@ -18,43 +18,39 @@ class Auth extends Controller
     public function login()
     {
         $this->sessionCheck();
+
         if (isset($_POST['submit'])) {
 
             $data = [
-                'email' => htmlentities($_POST['email']),
+                'user' => htmlentities($_POST['username']),
                 'pass' => htmlentities($_POST['password'])
             ];
 
-            if (preg_match('/[\'^£$%&*()}";:!`{#~?><>,|=_+¬-]/', $data['email'])) {
-                $_SESSION['error'] = "Email / Password tidak valid!";
-                header('Location: ' . BASEURL . '/auth');
-                exit();
-            } else {
-                $query = $this->dbh->prepare("SELECT * FROM admin WHERE email=:em OR id=:id");
-                $query->execute([
-                    'em' => $data['email'],
-                    'id' => $data['id']
-                ]);
-                if ($query->rowCount() > 0) {
-                    $user_data = $query->fetch(PDO::FETCH_ASSOC);
-                    if (password_verify($data['pass'], $user_data['password'])) {
-                        $_SESSION['auth'] = [
-                            'token' => $this->generateToken(),
-                            'id' => $user_data['id'],
-                            'name' => $user_data['name']
-                        ];
-                        header('Location: ' . BASEURL . '/admin');
-                        exit();
-                    } else {
-                        $_SESSION['error'] = "Email / Password Salah!";
-                        header('Location: ' . BASEURL . '/auth');
-                        exit();
-                    }
+            $query = $this->dbh->prepare("SELECT * FROM admin WHERE username=:user OR id=:id");
+            $query->execute([
+                'user' => $data['user'],
+                'id' => $data['user']
+            ]);
+            if ($query->rowCount() > 0) {
+
+                $user_data = $query->fetch(PDO::FETCH_ASSOC);
+                if (md5($data['pass']) === $user_data['password']) {
+                    $_SESSION['auth'] = [
+                        'token' => $this->generateToken(),
+                        'id' => $user_data['id'],
+                        'nama' => $user_data['nama']
+                    ];
+                    header('Location: ' . BASEURL . '/admin/index');
+                    exit();
                 } else {
-                    $_SESSION['error'] = "Email / Password Salah!";
+                    $_SESSION['error'] = "Username / Password Salah!";
                     header('Location: ' . BASEURL . '/auth');
                     exit();
                 }
+            } else {
+                $_SESSION['error'] = "Username / Password Salah!";
+                header('Location: ' . BASEURL . '/auth');
+                exit();
             }
         }
     }
